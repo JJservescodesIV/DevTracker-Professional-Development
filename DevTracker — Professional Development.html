@@ -1,0 +1,1376 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>DevTracker - Professional Development Goals</title>
+  <style>
+    :root {
+      --bg1: #1e3a8a;
+      --bg2: #1e40af;
+      --brand: #1d4ed8;
+      --brand-2: #3b82f6;
+      --panel: #334155;
+      --panel-2: #475569;
+      --muted: #94a3b8;
+      --text: #f9fafb;
+      --accent: #10b981;
+      --accent-2: #34d399;
+      --warn: #f59e0b;
+      --danger: #ef4444;
+      --ok: #10b981;
+      --chip: #64748b;
+      --shadow: rgba(0,0,0,0.12);
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, var(--bg1) 0%, var(--bg2) 100%);
+      color: var(--text);
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    header {
+      width: 100%;
+      background: var(--brand);
+      color: #fff;
+      padding: 1rem;
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-align: center;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 8px var(--shadow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+    }
+    .header-actions {
+      position: absolute;
+      right: 0.75rem;
+      display: flex;
+      gap: 0.4rem;
+    }
+    .progress-bar {
+      margin: 1rem;
+      width: 90vw;
+      max-width: 760px;
+      background: #334155;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    }
+    .progress-bar-inner {
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+      height: 1rem;
+      width: 0%;
+      transition: width 0.4s ease;
+    }
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 800px;
+      padding: 1rem;
+    }
+    .stats-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.6rem;
+      margin: 1.2rem 0 0.8rem 0;
+      padding: 0.7rem 1rem;
+      background: var(--brand);
+      border-radius: 1rem;
+      font-size: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .stats-bar span {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-size: 0.95rem;
+    }
+    .btn, button.btn {
+      background: var(--accent);
+      border: none;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 0.7rem;
+      padding: 0.45rem 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.05s ease;
+      font-size: 0.92rem;
+    }
+    .btn:hover { background: #059669; }
+    .btn:active { transform: translateY(1px); }
+    .btn.secondary {
+      background: var(--panel);
+      color: #e5e7eb;
+      border: 1px solid #475569;
+    }
+    .btn.warn { background: var(--warn); }
+    .btn.danger { background: #dc2626; }
+    .btn.icon {
+      padding: 0.3rem 0.5rem;
+      border-radius: 0.5rem;
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+    .btn.small { padding: 0.25rem 0.5rem; font-size: 0.8rem; border-radius: 0.45rem; }
+
+    /* Toolbar */
+    .toolbar {
+      background: var(--panel);
+      border-radius: 1rem;
+      padding: 0.7rem;
+      margin: 0.8rem 0 1rem 0;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr auto;
+      gap: 0.5rem;
+      align-items: center;
+      box-shadow: 0 2px 8px var(--shadow);
+    }
+    .toolbar input, .toolbar select {
+      width: 100%;
+      padding: 0.45rem 0.6rem;
+      border-radius: 0.5rem;
+      border: none;
+      background: #1f2937;
+      color: #e5e7eb;
+      outline: none;
+    }
+    .toolbar label {
+      display: none;
+    }
+
+    /* Focus Timer */
+    .focus-card {
+      background: var(--panel);
+      border-radius: 1rem;
+      margin: 1rem 0 1.2rem 0;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(17,24,39,0.07);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .focus-row {
+      display: grid;
+      grid-template-columns: 1fr 0.9fr 0.8fr;
+      gap: 0.5rem;
+    }
+    .focus-label {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 0.2rem;
+    }
+    .focus-timer {
+      font-size: 2.1rem;
+      font-family: 'Roboto Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      letter-spacing: 1px;
+    }
+    .focus-progress {
+      width: 100%;
+      height: 0.75rem;
+      background: #475569;
+      border-radius: 0.7rem;
+      overflow: hidden;
+    }
+    .focus-progress-inner {
+      height: 100%;
+      background: linear-gradient(90deg, var(--brand) 0%, var(--brand-2) 100%);
+      width: 0%;
+      transition: width 0.4s;
+    }
+    .focus-controls {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .focus-controls .btn:disabled {
+      background: #64748b;
+      cursor: not-allowed;
+    }
+    .focus-select select, .focus-select input, .focus-select label {
+      width: 100%;
+      padding: 0.35rem 0.5rem;
+      border-radius: 0.4rem;
+      border: none;
+      font-size: 0.9rem;
+    }
+    .focus-status { font-size: 0.9rem; color: #a5f3fc; min-height: 1em; }
+
+    /* Goal Cards */
+    .goal {
+      background: var(--panel-2);
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      padding: 0.9rem;
+      box-shadow: 0 2px 8px rgba(17,24,39,0.12);
+    }
+    .goal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.6rem;
+      margin-bottom: 0.4rem;
+    }
+    .goal-title {
+      font-size: 1.15rem;
+      font-weight: bold;
+      margin-bottom: 0.2rem;
+      word-break: break-word;
+    }
+    .goal-description {
+      color: #d1d5db;
+      margin-bottom: 0.4rem;
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+    }
+    .goal-deadline {
+      font-size: 0.85rem;
+      color: #fbbf24;
+      margin-top: 0.2rem;
+    }
+    .goal-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.35rem;
+      min-width: 170px;
+    }
+    .chip {
+      padding: 0.2rem 0.6rem;
+      border-radius: 1rem;
+      font-size: 0.78rem;
+      font-weight: bold;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: var(--chip);
+      color: #fff;
+      white-space: nowrap;
+    }
+    .performance { background: #dc2626; }
+    .promotion { background: #7c3aed; }
+    .bonus { background: #f59e0b; }
+    .skill { background: #059669; }
+    .leadership { background: #be185d; }
+
+    .status-chip { background: #6b7280; }
+    .not-started { background: #6b7280; }
+    .in-progress { background: #3b82f6; }
+    .under-review { background: #f59e0b; }
+    .completed { background: #10b981; }
+
+    .goal-actions {
+      display: flex;
+      gap: 0.35rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .goal-submeta {
+      font-size: 0.8rem;
+      color: #a5f3fc;
+    }
+    .milestones { margin-top: 0.5rem; margin-left: 0.2rem; }
+    .milestone {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.45rem;
+    }
+    .milestone input[type="checkbox"] {
+      accent-color: var(--accent);
+      width: 1.1rem;
+      height: 1.1rem;
+    }
+    .milestone.completed label {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+    .milestone label {
+      cursor: pointer;
+      user-select: none;
+      word-break: break-word;
+    }
+    .milestone-actions {
+      display: inline-flex;
+      gap: 0.25rem;
+    }
+    .supervisor-notes {
+      background: #4b5563;
+      border-radius: 0.5rem;
+      padding: 0.6rem;
+      margin-top: 0.6rem;
+      font-size: 0.9rem;
+      border-left: 3px solid var(--accent);
+    }
+    .supervisor-notes .author {
+      font-weight: bold;
+      color: #a5f3fc;
+      margin-bottom: 0.25rem;
+    }
+    .note-item {
+      background: #374151;
+      border-radius: 0.4rem;
+      padding: 0.4rem 0.5rem;
+      margin-top: 0.35rem;
+    }
+    .note-item small { color: #cbd5e1; display: block; }
+
+    /* Add Goal */
+    .add-goal {
+      margin: 1.1rem 0 0.8rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      background: var(--panel);
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(17,24,39,0.07);
+    }
+    .add-goal input, .add-goal select, .add-goal textarea {
+      padding: 0.45rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-size: 1rem;
+      background: #1f2937;
+      color: #e5e7eb;
+      outline: none;
+    }
+    .add-goal textarea { min-height: 60px; resize: vertical; }
+    .add-goal .form-row { display: flex; gap: 0.5rem; }
+    .add-goal .form-row > * { flex: 1; }
+
+    /* Modals */
+    .modal {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15,23,42,0.95);
+      z-index: 1000;
+      align-items: center; justify-content: center;
+      padding: 1rem;
+    }
+    .modal .window {
+      background: #ffffff;
+      color: #111827;
+      width: 95vw; max-width: 560px;
+      padding: 1rem;
+      border-radius: 1rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+    .modal h2 { margin: 0 0 0.6rem 0; }
+    .modal .row { display: flex; gap: 0.5rem; }
+    .modal input, .modal select, .modal textarea {
+      width: 100%; padding: 0.5rem;
+      border-radius: 0.5rem; border: 1px solid #e5e7eb;
+      font-size: 1rem;
+    }
+    .modal .actions { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.6rem; }
+
+    /* Simple chart */
+    .bar {
+      height: 10px; border-radius: 6px; background: #e5e7eb; overflow: hidden;
+    }
+    .bar > span {
+      display: block; height: 100%; background: #2563eb;
+    }
+    .chart-row {
+      display: grid; grid-template-columns: 1fr 80px; gap: 0.5rem; align-items: center; margin: 0.35rem 0;
+    }
+    .empty {
+      color: #cbd5e1; font-style: italic;
+    }
+
+    /* Responsive */
+    @media (max-width: 860px) {
+      .progress-bar, main { max-width: 98vw; }
+    }
+    @media (max-width: 680px) {
+      .toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+      .focus-row {
+        grid-template-columns: 1fr;
+      }
+      .goal-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .goal-meta { align-items: flex-start; }
+      .goal-actions { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <span>🎯 DevTracker — Professional Development</span>
+    <div class="header-actions">
+      <button class="btn small secondary" onclick="openReports()" title="Reports">📊</button>
+      <button class="btn small secondary" onclick="exportData()" title="Export">⬇️</button>
+      <label class="btn small secondary" title="Import" for="importFile" style="cursor:pointer;">⬆️</label>
+      <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importData(event)">
+    </div>
+  </header>
+
+  <div class="progress-bar" aria-label="Overall progress">
+    <div class="progress-bar-inner" id="progressBar"></div>
+  </div>
+
+  <main>
+    <div class="stats-bar" role="region" aria-label="Stats">
+      <span>Progress: <strong id="progressCount">0%</strong></span>
+      <span>Completed Goals: <strong id="completedGoalsCount">0</strong></span>
+      <span>Focus Sessions: <strong id="focusSessionCount">0</strong></span>
+      <span>Upcoming (7d): <strong id="upcomingCount">0</strong></span>
+      <div>
+        <button class="btn small" onclick="openReports()">📊 Reports</button>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar" role="region" aria-label="Filters and sorting">
+      <input id="searchInput" type="search" placeholder="Search goals and milestones..." oninput="applyFiltersDebounced()" aria-label="Search">
+      <select id="filterCategory" onchange="applyFilters()" aria-label="Filter by category">
+        <option value="">All Categories</option>
+        <option value="performance">Performance</option>
+        <option value="promotion">Promotion</option>
+        <option value="bonus">Bonus</option>
+        <option value="skill">Skill</option>
+        <option value="leadership">Leadership</option>
+      </select>
+      <select id="filterStatus" onchange="applyFilters()" aria-label="Filter by status">
+        <option value="">All Statuses</option>
+        <option value="not-started">Not started</option>
+        <option value="in-progress">In progress</option>
+        <option value="under-review">Under review</option>
+        <option value="completed">Completed</option>
+      </select>
+      <select id="sortBy" onchange="applyFilters()" aria-label="Sort">
+        <option value="deadline-asc">Sort: Deadline (soonest)</option>
+        <option value="deadline-desc">Sort: Deadline (latest)</option>
+        <option value="progress-desc">Sort: Progress (high→low)</option>
+        <option value="updated-desc">Sort: Recently updated</option>
+        <option value="created-asc">Sort: Oldest first</option>
+      </select>
+      <button class="btn small secondary" onclick="resetFilters()">Reset</button>
+    </div>
+
+    <!-- Focus Timer -->
+    <div class="focus-card">
+      <div class="focus-label">🎯 Focus Session</div>
+      <div class="focus-row">
+        <div class="focus-select">
+          <label for="focusGoal">Target</label>
+          <select id="focusGoal" aria-label="Select focus target"></select>
+        </div>
+        <div class="focus-select">
+          <label for="focusDurationSelect">Duration</label>
+          <select id="focusDurationSelect" onchange="updateFocusDuration()">
+            <option value="15">15 min</option>
+            <option value="25" selected="">25 min</option>
+            <option value="50">50 min</option>
+            <option value="custom">Custom…</option>
+          </select>
+        </div>
+        <div class="focus-select" id="customDurationWrap" style="display:none;">
+          <label for="customDuration">Custom (min)</label>
+          <input id="customDuration" type="number" min="1" max="240" value="30" oninput="updateFocusDuration()">
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:0.5rem;font-size:0.9rem;margin-top:0.2rem;">
+        <input type="checkbox" id="autoCompleteMilestone"> Auto-complete selected milestone on finish
+      </label>
+      <div class="focus-timer" id="focusTimer" aria-live="polite">25:00</div>
+      <div class="focus-progress" aria-hidden="true">
+        <div class="focus-progress-inner" id="focusProgress"></div>
+      </div>
+      <div class="focus-controls">
+        <button class="btn" id="startBtn" onclick="startFocus()">Start</button>
+        <button class="btn" id="pauseBtn" onclick="pauseFocus()" disabled="">Pause</button>
+        <button class="btn" id="resetBtn" onclick="resetFocus()" disabled="">Reset</button>
+      </div>
+      <div class="focus-status" id="focusStatus"></div>
+    </div>
+
+    <!-- Add New Goal Form -->
+    <div class="add-goal">
+      <h3 style="margin:0 0 0.5rem 0; color:#a5f3fc;">Add Development Goal</h3>
+      <form onsubmit="addGoal(event)">
+        <input type="text" id="goalTitle" placeholder="Goal title..." required="">
+        <textarea id="goalDescription" placeholder="Describe this goal and its importance..."></textarea>
+        <div class="form-row">
+          <select id="goalCategory" required="">
+            <option value="">Select Category</option>
+            <option value="performance">Performance Improvement</option>
+            <option value="promotion">Promotion Track</option>
+            <option value="bonus">Bonus Objective</option>
+            <option value="skill">Skill Development</option>
+            <option value="leadership">Leadership Growth</option>
+          </select>
+          <input type="date" id="goalDeadline" required="">
+        </div>
+        <button class="btn" type="submit">Add Goal</button>
+      </form>
+    </div>
+
+    <div id="goals" aria-live="polite"></div>
+  </main>
+
+  <!-- Reports Modal -->
+  <div id="reportsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="reportsTitle">
+    <div class="window">
+      <h2 id="reportsTitle">📊 Development Progress Report</h2>
+      <div id="reportContent"></div>
+      <div class="actions">
+        <button class="btn secondary" onclick="closeReports()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Goal Modal -->
+  <div id="editModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+    <div class="window">
+      <h2 id="editTitle">✏️ Edit Goal</h2>
+      <form id="editForm" onsubmit="saveGoalEdits(event)">
+        <input type="hidden" id="editGoalId">
+        <label>Title
+          <input id="editTitleInput" required="">
+        </label>
+        <label>Description
+          <textarea id="editDescInput" rows="4"></textarea>
+        </label>
+        <div class="row">
+          <label style="flex:1;">Category
+            <select id="editCategoryInput" required="">
+              <option value="performance">Performance</option>
+              <option value="promotion">Promotion</option>
+              <option value="bonus">Bonus</option>
+              <option value="skill">Skill</option>
+              <option value="leadership">Leadership</option>
+            </select>
+          </label>
+          <label style="flex:1;">Status
+            <select id="editStatusInput" required="">
+              <option value="not-started">Not started</option>
+              <option value="in-progress">In progress</option>
+              <option value="under-review">Under review</option>
+              <option value="completed">Completed</option>
+            </select>
+          </label>
+        </div>
+        <label>Deadline
+          <input id="editDeadlineInput" type="date" required="">
+        </label>
+        <div class="actions">
+          <button type="button" class="btn secondary" onclick="closeEdit()">Cancel</button>
+          <button type="submit" class="btn">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Add Note Modal -->
+  <div id="noteModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="noteTitle">
+    <div class="window">
+      <h2 id="noteTitle">🗒️ Add Supervisor Note</h2>
+      <form id="noteForm" onsubmit="saveNote(event)">
+        <input type="hidden" id="noteGoalId">
+        <label>Author
+          <input id="noteAuthor" placeholder="e.g., Supervisor, Mentor" required="">
+        </label>
+        <label>Note
+          <textarea id="noteText" rows="4" placeholder="Feedback, guidance, or comments..." required=""></textarea>
+        </label>
+        <div class="actions">
+          <button type="button" class="btn secondary" onclick="closeNote()">Cancel</button>
+          <button type="submit" class="btn">Add Note</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ---------- State & Utilities ----------
+    const STORAGE_KEY = 'devtracker_state_v2';
+
+    function uid(prefix='id') {
+      return `${prefix}_${Math.random().toString(36).slice(2,8)}_${Date.now().toString(36)}`;
+    }
+    function todayISO(d = new Date()) {
+      const tzOff = d.getTimezoneOffset() * 60000;
+      const local = new Date(d - tzOff);
+      return local.toISOString().slice(0,10);
+    }
+    function daysBetween(a, b) {
+      const ms = (new Date(b).setHours(0,0,0,0) - new Date(a).setHours(0,0,0,0));
+      return Math.ceil(ms / (1000*60*60*24));
+    }
+
+    const initialGoalsSeed = [
+      {
+        id: uid('g'),
+        title: "Complete Advanced Leadership Training",
+        description: "Enroll in and complete the company's advanced leadership certification program to prepare for senior role responsibilities.",
+        category: "leadership",
+        status: "in-progress",
+        deadline: "2025-09-15",
+        milestones: [
+          { id: uid('m'), text: "Register for training program", done: true },
+          { id: uid('m'), text: "Complete modules 1-3", done: true },
+          { id: uid('m'), text: "Complete modules 4-6", done: false },
+          { id: uid('m'), text: "Pass final assessment", done: false }
+        ],
+        supervisorNotes: [
+          { id: uid('n'), author: "Supervisor", text: "Great progress so far! The skills you're learning will be valuable for the team lead position.", timestamp: Date.now() - 1000*60*60*24*10 }
+        ],
+        createdAt: Date.now() - 1000*60*60*24*40,
+        updatedAt: Date.now() - 1000*60*60*24*2,
+        sessionsCount: 3
+      },
+      {
+        id: uid('g'),
+        title: "Increase Customer Satisfaction Score",
+        description: "Improve customer satisfaction metrics by 15% through enhanced communication and problem-solving skills.",
+        category: "performance",
+        status: "in-progress",
+        deadline: "2025-08-30",
+        milestones: [
+          { id: uid('m'), text: "Analyze current satisfaction scores", done: true },
+          { id: uid('m'), text: "Implement new follow-up procedures", done: false },
+          { id: uid('m'), text: "Complete customer service training", done: false }
+        ],
+        supervisorNotes: [
+          { id: uid('n'), author: "Supervisor", text: "Your initiative on this goal is impressive. Consider shadowing Sarah for her customer interaction techniques.", timestamp: Date.now() - 1000*60*60*24*7 }
+        ],
+        createdAt: Date.now() - 1000*60*60*24*35,
+        updatedAt: Date.now() - 1000*60*60*24*1,
+        sessionsCount: 2
+      }
+    ];
+
+    let state = {
+      version: 2,
+      goals: [],
+      achievementCount: 0, // total focus sessions
+      sessionsHistory: [] // {id, targetType, goalId, milestoneId, duration, timestamp, autoCompleted}
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          state.goals = initialGoalsSeed;
+          state.achievementCount = 8;
+          saveState();
+          return;
+        }
+        const parsed = JSON.parse(raw);
+        // basic validation/migration
+        if (!parsed.version) parsed.version = 2;
+        if (!Array.isArray(parsed.goals)) parsed.goals = [];
+        if (typeof parsed.achievementCount !== 'number') parsed.achievementCount = 0;
+        if (!Array.isArray(parsed.sessionsHistory)) parsed.sessionsHistory = [];
+        // Ensure IDs exist
+        parsed.goals.forEach(g => {
+          if (!g.id) g.id = uid('g');
+          g.milestones?.forEach(m => { if (!m.id) m.id = uid('m'); });
+          if (!Array.isArray(g.supervisorNotes)) g.supervisorNotes = [];
+          g.supervisorNotes.forEach(n => { if (!n.id) n.id = uid('n'); if (!n.timestamp) n.timestamp = Date.now(); });
+          if (!g.createdAt) g.createdAt = Date.now();
+          if (!g.updatedAt) g.updatedAt = Date.now();
+          if (typeof g.sessionsCount !== 'number') g.sessionsCount = 0;
+        });
+        state = parsed;
+      } catch (e) {
+        console.error('Failed to load state', e);
+        state.goals = initialGoalsSeed;
+        state.achievementCount = 8;
+        saveState();
+      }
+    }
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      } catch (e) {
+        console.warn('Failed to save to localStorage', e);
+      }
+    }
+
+    function findGoalIndexById(goalId) {
+      return state.goals.findIndex(g => g.id === goalId);
+    }
+    function findMilestoneIndexById(goal, milestoneId) {
+      return goal.milestones.findIndex(m => m.id === milestoneId);
+    }
+
+    // ---------- Derived metrics ----------
+    function computeGoalProgress(goal) {
+      const total = goal.milestones.length;
+      if (total === 0) {
+        // Fallback: status-based estimate
+        const map = { 'not-started': 0, 'in-progress': 50, 'under-review': 75, 'completed': 100 };
+        return map[goal.status] ?? 0;
+      }
+      const done = goal.milestones.filter(m => m.done).length;
+      return Math.round((done / total) * 100);
+    }
+    function getOverallProgress() {
+      let total = 0, done = 0;
+      state.goals.forEach(g => {
+        total += g.milestones.length;
+        done += g.milestones.filter(m => m.done).length;
+      });
+      if (total === 0) {
+        // approximate by status
+        const sum = state.goals.reduce((acc,g) => acc + computeGoalProgress(g), 0);
+        return state.goals.length ? Math.round(sum / state.goals.length) : 0;
+      }
+      return Math.round((done / total) * 100);
+    }
+    function getUpcomingCount(daysWindow = 7) {
+      const now = todayISO();
+      return state.goals.filter(g => {
+        const days = daysBetween(now, g.deadline);
+        return days >= 0 && days <= daysWindow && g.status !== 'completed';
+      }).length;
+    }
+    function completedGoalsCount() {
+      return state.goals.filter(g => g.status === 'completed').length;
+    }
+
+    // ---------- Filters & sorting ----------
+    let view = { search: '', category: '', status: '', sortBy: 'deadline-asc' };
+    const searchInput = () => document.getElementById('searchInput');
+    function applyFilters() {
+      view.search = document.getElementById('searchInput').value.trim().toLowerCase();
+      view.category = document.getElementById('filterCategory').value;
+      view.status = document.getElementById('filterStatus').value;
+      view.sortBy = document.getElementById('sortBy').value;
+      renderGoals();
+    }
+    const applyFiltersDebounced = debounce(applyFilters, 150);
+    function resetFilters() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('filterCategory').value = '';
+      document.getElementById('filterStatus').value = '';
+      document.getElementById('sortBy').value = 'deadline-asc';
+      applyFilters();
+    }
+    function filterAndSortGoals() {
+      let list = [...state.goals];
+      if (view.category) list = list.filter(g => g.category === view.category);
+      if (view.status) list = list.filter(g => g.status === view.status);
+      if (view.search) {
+        list = list.filter(g => {
+          const hay = (g.title + ' ' + (g.description||'') + ' ' + g.milestones.map(m => m.text).join(' ')).toLowerCase();
+          return hay.includes(view.search);
+        });
+      }
+      switch(view.sortBy) {
+        case 'deadline-asc':
+          list.sort((a,b) => new Date(a.deadline) - new Date(b.deadline)); break;
+        case 'deadline-desc':
+          list.sort((a,b) => new Date(b.deadline) - new Date(a.deadline)); break;
+        case 'progress-desc':
+          list.sort((a,b) => computeGoalProgress(b) - computeGoalProgress(a)); break;
+        case 'updated-desc':
+          list.sort((a,b) => (b.updatedAt||0) - (a.updatedAt||0)); break;
+        case 'created-asc':
+          list.sort((a,b) => (a.createdAt||0) - (b.createdAt||0)); break;
+      }
+      return list;
+    }
+
+    function debounce(fn, wait=200) {
+      let t; return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), wait); };
+    }
+
+    // ---------- Rendering ----------
+    function renderGoals() {
+      const goalsDiv = document.getElementById('goals');
+      goalsDiv.innerHTML = '';
+
+      const list = filterAndSortGoals();
+      list.forEach(goal => {
+        const completedMilestones = goal.milestones.filter(m => m.done).length;
+        const totalMilestones = goal.milestones.length;
+        const goalProgress = computeGoalProgress(goal);
+
+        const now = todayISO();
+        const daysUntilDeadline = daysBetween(now, goal.deadline);
+        const deadlineText = daysUntilDeadline > 0 ? `${daysUntilDeadline} day${daysUntilDeadline===1?'':'s'} remaining`
+                            : daysUntilDeadline === 0 ? 'Due today'
+                            : 'Overdue';
+        const deadlineClass = daysUntilDeadline < 0 ? 'color: #ef4444;'
+                            : daysUntilDeadline <= 7 ? 'color: #f59e0b;' : '';
+
+        const statusHuman = humanizeStatus(goal.status);
+
+        const milestoneHtml = goal.milestones.map((m, idx) => `
+          <div class="milestone ${m.done ? 'completed' : ''}" id="milestone-${m.id}">
+            <input type="checkbox" ${m.done ? 'checked' : ''} onchange="toggleMilestone('${goal.id}','${m.id}')"
+                   id="cb-${m.id}" aria-label="Toggle ${escapeHtml(m.text)}">
+            <label for="cb-${m.id}">${escapeHtml(m.text)}</label>
+            <div class="milestone-actions">
+              <button class="btn icon secondary" title="Move up" onclick="moveMilestone('${goal.id}','${m.id}',-1)">⬆️</button>
+              <button class="btn icon secondary" title="Move down" onclick="moveMilestone('${goal.id}','${m.id}',1)">⬇️</button>
+              <button class="btn icon secondary" title="Edit" onclick="editMilestone('${goal.id}','${m.id}')">✏️</button>
+              <button class="btn icon danger" title="Delete" onclick="deleteMilestone('${goal.id}','${m.id}')">🗑️</button>
+            </div>
+          </div>
+        `).join('');
+
+        const notesHtml = goal.supervisorNotes.length ? goal.supervisorNotes
+          .slice().sort((a,b)=>b.timestamp-a.timestamp).slice(0,3).map(n => `
+          <div class="note-item">
+            <div><strong>${escapeHtml(n.author||'Supervisor')}</strong></div>
+            <div>${escapeHtml(n.text)}</div>
+            <small>${new Date(n.timestamp).toLocaleString()}</small>
+          </div>
+        `).join('') : `<div class="empty">No notes yet.</div>`;
+
+        const goalHTML = `
+          <div class="goal" id="goal-${goal.id}">
+            <div class="goal-header">
+              <div style="flex:1;">
+                <div class="goal-title">${escapeHtml(goal.title)}</div>
+                <div class="goal-description">${escapeHtml(goal.description||'')}</div>
+                <div class="goal-deadline" style="${deadlineClass}">⏰ ${deadlineText} · Due ${escapeHtml(goal.deadline)}</div>
+              </div>
+              <div class="goal-meta">
+                <span class="chip ${goal.category}">${capitalize(goal.category)}</span>
+                <div class="goal-actions">
+                  <select aria-label="Change status" onchange="quickChangeStatus('${goal.id}', this.value)">
+                    ${['not-started','in-progress','under-review','completed'].map(s =>
+                      `<option value="${s}" ${s===goal.status?'selected':''}>${humanizeStatus(s)}</option>`
+                    ).join('')}
+                  </select>
+                  <button class="btn small secondary" onclick="openEdit('${goal.id}')" title="Edit Goal">✏️ Edit</button>
+                  <button class="btn small secondary" onclick="openNote('${goal.id}')" title="Add Note">🗒️ Note</button>
+                  <button class="btn small danger" onclick="deleteGoal('${goal.id}')" title="Delete Goal">🗑️ Delete</button>
+                </div>
+                <div class="goal-submeta">${goalProgress}% complete · ${completedMilestones}/${totalMilestones} milestones</div>
+                <div class="goal-submeta">Focus sessions: ${goal.sessionsCount}</div>
+              </div>
+            </div>
+
+            <div class="milestones">
+              <strong style="color:#a5f3fc;font-size:0.9rem;">Milestones:</strong>
+              ${milestoneHtml || '<div class="empty" style="margin:0.35rem 0;">No milestones yet.</div>'}
+              <form onsubmit="addMilestone(event,'${goal.id}')" style="margin-top:0.5rem;">
+                <input type="text" placeholder="Add milestone..." style="width:75%;padding:0.3rem;border-radius:0.3rem;margin-right:0.5rem;" required>
+                <button class="btn" type="submit" style="padding:0.3rem 0.8rem;font-size:0.85rem;">Add</button>
+              </form>
+            </div>
+
+            <div class="supervisor-notes">
+              <div class="author">Supervisor Notes</div>
+              ${notesHtml}
+              <div style="margin-top:0.4rem;">
+                <button class="btn small secondary" onclick="openNote('${goal.id}')">Add Note</button>
+              </div>
+            </div>
+          </div>
+        `;
+        goalsDiv.insertAdjacentHTML('beforeend', goalHTML);
+      });
+
+      updateStats();
+      renderFocusGoalSelect();
+    }
+
+    function updateStats() {
+      const progress = getOverallProgress();
+      document.getElementById('progressCount').textContent = progress + '%';
+      document.getElementById('progressBar').style.width = progress + '%';
+      document.getElementById('focusSessionCount').textContent = state.achievementCount;
+      document.getElementById('completedGoalsCount').textContent = completedGoalsCount();
+      document.getElementById('upcomingCount').textContent = getUpcomingCount(7);
+      saveState();
+    }
+
+    // ---------- Goal CRUD ----------
+    function addGoal(e) {
+      e.preventDefault();
+      const title = document.getElementById('goalTitle').value.trim();
+      const description = document.getElementById('goalDescription').value.trim();
+      const category = document.getElementById('goalCategory').value;
+      const deadline = document.getElementById('goalDeadline').value;
+
+      if (title && category && deadline) {
+        const goal = {
+          id: uid('g'),
+          title, description, category,
+          status: "not-started",
+          deadline,
+          milestones: [],
+          supervisorNotes: [],
+          createdAt: Date.now(),
+          updatedAt: Date.now(),
+          sessionsCount: 0
+        };
+        state.goals.unshift(goal);
+        // Reset form
+        document.getElementById('goalTitle').value = '';
+        document.getElementById('goalDescription').value = '';
+        document.getElementById('goalCategory').value = '';
+        document.getElementById('goalDeadline').value = '';
+        renderGoals();
+      }
+    }
+
+    function deleteGoal(goalId) {
+      const gi = findGoalIndexById(goalId);
+      if (gi === -1) return;
+      if (!confirm('Delete this goal? This cannot be undone.')) return;
+      state.goals.splice(gi,1);
+      renderGoals();
+    }
+
+    function quickChangeStatus(goalId, status) {
+      const gi = findGoalIndexById(goalId);
+      if (gi === -1) return;
+      state.goals[gi].status = status;
+      state.goals[gi].updatedAt = Date.now();
+      renderGoals();
+    }
+
+    // ---------- Milestones ----------
+    function addMilestone(e, goalId) {
+      e.preventDefault();
+      const input = e.target.querySelector('input');
+      const text = input.value.trim();
+      if (!text) return;
+      const gi = findGoalIndexById(goalId);
+      if (gi === -1) return;
+      state.goals[gi].milestones.push({ id: uid('m'), text, done: false });
+      state.goals[gi].updatedAt = Date.now();
+      input.value = '';
+      renderGoals();
+    }
+    function toggleMilestone(goalId, milestoneId) {
+      const gi = findGoalIndexById(goalId);
+      if (gi === -1) return;
+      const mi = findMilestoneIndexById(state.goals[gi], milestoneId);
+      if (mi === -1) return;
+      const m = state.goals[gi].milestones[mi];
+      m.done = !m.done;
+      // Auto-upgrade status
+      if (m.done) {
+        const allDone = state.goals[gi].milestones.every(x => x.done);
+        if (allDone && state.goals[gi].milestones.length > 0) {
+          state.goals[gi].status = 'completed';
+        } else if (state.goals[gi].status === 'not-started') {
+          state.goals[gi].status = 'in-progress';
+        }
+      } else {
+        if (state.goals[gi].status === 'completed') {
+          state.goals[gi].status = 'in-progress';
+        }
+      }
+      state.goals[gi].updatedAt = Date.now();
+      renderGoals();
+    }
+    function deleteMilestone(goalId, milestoneId) {
+      const gi = findGoalIndexById(goalId);
+      if (gi === -1) return;
+      const mi = findMilestoneIndexById(state.goals[gi], milestoneId);
+      if (mi === -1) return;
+      if (!confirm('Delete this milestone?')) return;
+      state.goals[gi].milestones.splice(mi,1);
+      state.goals[gi].updatedAt = Date.now();
+      renderGoals();
+    }
+    function moveMilestone(goalId, milestoneId, dir) {
+      const gi = findGoalIndexById(goalId);
+      if (gi === -1) return;
+      const goal = state.goals[gi];
+      const mi = findMilestoneIndexById(goal, milestoneId);
+      if (mi === -1) return;
+      const ni = mi + dir;
+      if (ni < 0 || ni >= goal.milestones.length) return;
+      const [m] = goal.milestones.splice(mi,1);
+      goal.milestones.splice(ni,0,m);
+      goal.updatedAt = Date.now();
+      renderGoals();
+    }
+    function editMilestone(goalId, milestoneId) {
+      const gi = findGoalIndexById(goalId);
+      if (gi === -1) return;
+      const goal = state.goals[gi];
+      const mi = findMilestoneIndexById(goal, milestoneId);
+      if (mi === -1) return;
+      const current = goal.milestones[mi].text;
+      const text = prompt('Edit milestone text:', current);
+      if (text === null) return;
+      const trimmed = text.trim();
+      if (!trimmed) return;
+      goal.milestones[mi].text = trimmed;
+      goal.updatedAt = Date.now();
+      renderGoals();
+    }
+
+    // ---------- Notes ----------
+    function openNote(goalId) {
+      document.getElementById('noteGoalId').value = goalId;
+      document.getElementById('noteAuthor').value = '';
+      document.getElementById('noteText').value = '';
+      document.getElementById('noteModal').style.display = 'flex';
+    }
+    function closeNote() {
+      document.getElementById('noteModal').style.display = 'none';
+    }
+    function saveNote(e) {
+      e.preventDefault();
+      const goalId = document.getElementById('noteGoalId').value;
+      const author = document.getElementById('noteAuthor').value.trim() || 'Supervisor';
+      const text = document.getElementById('noteText').value.trim();
+      if (!text) return;
+      const gi = findGoalIndexById(goalId);
+      if (gi === -1) return;
+      state.goals[gi].supervisorNotes.push({ id: uid('n'), author, text, timestamp: Date.now() });
+      state.goals[gi].updatedAt = Date.now();
+      closeNote(); renderGoals();
+    }
+
+    // ---------- Edit Goal ----------
+    function openEdit(goalId) {
+      const gi = findGoalIndexById(goalId);
+      if (gi === -1) return;
+      const g = state.goals[gi];
+      document.getElementById('editGoalId').value = g.id;
+      document.getElementById('editTitleInput').value = g.title;
+      document.getElementById('editDescInput').value = g.description || '';
+      document.getElementById('editCategoryInput').value = g.category;
+      document.getElementById('editStatusInput').value = g.status;
+      document.getElementById('editDeadlineInput').value = g.deadline;
+      document.getElementById('editModal').style.display = 'flex';
+    }
+    function closeEdit() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+    function saveGoalEdits(e) {
+      e.preventDefault();
+      const id = document.getElementById('editGoalId').value;
+      const gi = findGoalIndexById(id);
+      if (gi === -1) return;
+      const g = state.goals[gi];
+      g.title = document.getElementById('editTitleInput').value.trim();
+      g.description = document.getElementById('editDescInput').value.trim();
+      g.category = document.getElementById('editCategoryInput').value;
+      g.status = document.getElementById('editStatusInput').value;
+      g.deadline = document.getElementById('editDeadlineInput').value;
+      g.updatedAt = Date.now();
+      closeEdit(); renderGoals();
+    }
+
+    // ---------- Focus Timer ----------
+    let focusTime = 25 * 60; // seconds
+    let focusTimer = focusTime;
+    let focusInterval = null;
+    let focusRunning = false;
+    let focusTarget = null; // {type:'goal'|'milestone'|'none', goalId, milestoneId}
+    function renderFocusGoalSelect() {
+      const select = document.getElementById('focusGoal');
+      select.innerHTML = `<option value="">Choose a goal or milestone</option>
+                          <option value="none">No specific target</option>`;
+      state.goals.forEach((goal) => {
+        select.innerHTML += `<option value="goal:${goal.id}">🎯 ${escapeHtml(goal.title)}</option>`;
+        goal.milestones.forEach((ms) => {
+          if (!ms.done) {
+            select.innerHTML += `<option value="milestone:${goal.id}:${ms.id}">&nbsp;↳ ${escapeHtml(ms.text)}</option>`;
+          }
+        });
+      });
+    }
+    function parseFocusSelectValue(val) {
+      if (!val || val === '') return null;
+      if (val === 'none') return { type: 'none', goalId: null, milestoneId: null };
+      const parts = val.split(':');
+      if (parts[0] === 'goal') return { type: 'goal', goalId: parts[1], milestoneId: null };
+      if (parts[0] === 'milestone') return { type: 'milestone', goalId: parts[1], milestoneId: parts[2] };
+      return null;
+    }
+    function renderFocusTimer() {
+      const timerEl = document.getElementById('focusTimer');
+      let mins = Math.floor(focusTimer/60).toString().padStart(2, '0');
+      let secs = (focusTimer%60).toString().padStart(2, '0');
+      timerEl.textContent = `${mins}:${secs}`;
+
+      const progressEl = document.getElementById('focusProgress');
+      let percent = 100 * (focusTime - focusTimer) / focusTime;
+      progressEl.style.width = Math.min(100, Math.max(0, percent)) + '%';
+
+      document.getElementById('focusStatus').textContent = focusRunning
+        ? 'Stay focused on your development goal...'
+        : '';
+      document.getElementById('startBtn').disabled = focusRunning;
+      document.getElementById('pauseBtn').disabled = !focusRunning;
+      document.getElementById('resetBtn').disabled = !focusRunning && focusTimer === focusTime;
+    }
+    function startFocus() {
+      if (focusRunning) return;
+      const val = document.getElementById('focusGoal').value;
+      focusTarget = parseFocusSelectValue(val) || { type: 'none', goalId: null, milestoneId: null };
+      focusRunning = true;
+      renderFocusTimer();
+      focusInterval = setInterval(tickFocus, 1000);
+    }
+    function pauseFocus() {
+      focusRunning = false;
+      clearInterval(focusInterval);
+      renderFocusTimer();
+    }
+    function resetFocus() {
+      pauseFocus();
+      focusTimer = focusTime;
+      renderFocusTimer();
+    }
+    function tickFocus() {
+      if (focusTimer > 0) {
+        focusTimer--;
+        renderFocusTimer();
+        if (focusTimer === 0) focusFinish();
+      }
+    }
+    function focusFinish() {
+      pauseFocus();
+      const autoComplete = document.getElementById('autoCompleteMilestone').checked;
+      // Record session
+      state.achievementCount++;
+      const session = {
+        id: uid('s'),
+        targetType: focusTarget?.type || 'none',
+        goalId: focusTarget?.goalId || null,
+        milestoneId: focusTarget?.milestoneId || null,
+        duration: focusTime,
+        timestamp: Date.now(),
+        autoCompleted: false
+      };
+      // Increment per-goal session count
+      if (focusTarget && focusTarget.goalId) {
+        const gi = findGoalIndexById(focusTarget.goalId);
+        if (gi !== -1) {
+          state.goals[gi].sessionsCount = (state.goals[gi].sessionsCount || 0) + 1;
+          state.goals[gi].updatedAt = Date.now();
+        }
+      }
+      // Auto-complete milestone if selected
+      if (autoComplete && focusTarget && focusTarget.type === 'milestone') {
+        const gi = findGoalIndexById(focusTarget.goalId);
+        if (gi !== -1) {
+          const mi = findMilestoneIndexById(state.goals[gi], focusTarget.milestoneId);
+          if (mi !== -1 && !state.goals[gi].milestones[mi].done) {
+            state.goals[gi].milestones[mi].done = true;
+            const allDone = state.goals[gi].milestones.every(m => m.done);
+            if (allDone && state.goals[gi].milestones.length > 0) state.goals[gi].status = 'completed';
+            state.goals[gi].updatedAt = Date.now();
+            session.autoCompleted = true;
+          }
+        }
+      }
+      state.sessionsHistory.push(session);
+      document.getElementById('focusStatus').textContent = 'Great focus session! Your dedication will pay off. 🎉';
+      // Vibrate if supported
+      if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+      renderGoals();
+    }
+    function updateFocusDuration() {
+      const sel = document.getElementById('focusDurationSelect').value;
+      const wrap = document.getElementById('customDurationWrap');
+      let minutes = 25;
+      if (sel === 'custom') {
+        wrap.style.display = 'block';
+        minutes = parseInt(document.getElementById('customDuration').value || '25', 10);
+      } else {
+        wrap.style.display = 'none';
+        minutes = parseInt(sel, 10);
+      }
+      minutes = Math.min(240, Math.max(1, minutes));
+      focusTime = minutes * 60;
+      focusTimer = focusTime;
+      renderFocusTimer();
+    }
+
+    // ---------- Reports ----------
+    function openReports() {
+      generateReport();
+      document.getElementById('reportsModal').style.display = 'flex';
+    }
+    function closeReports() {
+      document.getElementById('reportsModal').style.display = 'none';
+    }
+    function generateReport() {
+      const reportDiv = document.getElementById('reportContent');
+      const progressPercentage = getOverallProgress();
+      const totalGoals = state.goals.length;
+      const completedGoals = state.goals.filter(g => g.status === 'completed').length;
+      const inProgressGoals = state.goals.filter(g => g.status === 'in-progress').length;
+      const overdue = state.goals.filter(g => new Date(g.deadline) < new Date() && g.status !== 'completed').length;
+
+      const categoryCounts = {};
+      state.goals.forEach(g => { categoryCounts[g.category] = (categoryCounts[g.category] || 0) + 1; });
+
+      const weekAgo = Date.now() - 7*24*60*60*1000;
+      const sessions7 = state.sessionsHistory.filter(s => s.timestamp >= weekAgo).length;
+
+      const maxCat = Math.max(1, ...Object.values(categoryCounts));
+      const catRows = Object.entries(categoryCounts).map(([cat,count]) => `
+        <div class="chart-row">
+          <div>${capitalize(cat)}</div>
+          <div class="bar"><span style="width:${(count/maxCat)*100}%; background:${categoryColor(cat)};"></span></div>
+        </div>
+      `).join('') || '<div class="empty">No goals yet.</div>';
+
+      const upcoming = state.goals
+        .filter(g => daysBetween(todayISO(), g.deadline) >= 0)
+        .sort((a,b) => new Date(a.deadline) - new Date(b.deadline))
+        .slice(0,5)
+        .map(g => `<li>${escapeHtml(g.title)} — due ${escapeHtml(g.deadline)} (${daysBetween(todayISO(), g.deadline)}d)</li>`)
+        .join('') || '<li class="empty">No upcoming deadlines.</li>';
+
+      // Top focus targets
+      const goalSessions = {};
+      state.sessionsHistory.forEach(s => {
+        if (s.goalId) goalSessions[s.goalId] = (goalSessions[s.goalId] || 0) + 1;
+      });
+      const topGoals = Object.entries(goalSessions)
+        .sort((a,b)=>b[1]-a[1]).slice(0,5)
+        .map(([gid, cnt]) => {
+          const g = state.goals.find(x => x.id === gid);
+          return `<li>${escapeHtml(g?.title || 'Unknown goal')} — ${cnt} session${cnt===1?'':'s'}</li>`;
+        }).join('') || '<li class="empty">No sessions yet.</li>';
+
+      reportDiv.innerHTML = `
+        <div style="margin-bottom:0.8rem;">
+          <strong>Overall Progress:</strong> ${progressPercentage}%<br>
+          <strong>Total Goals:</strong> ${totalGoals}<br>
+          <strong>Completed:</strong> ${completedGoals}<br>
+          <strong>In Progress:</strong> ${inProgressGoals}<br>
+          <strong>Overdue:</strong> ${overdue}<br>
+          <strong>Focus Sessions (total / 7d):</strong> ${state.achievementCount} / ${sessions7}
+        </div>
+        <div style="margin-bottom:0.8rem;">
+          <strong>Goals by Category:</strong>
+          <div style="margin-top:0.4rem;">${catRows}</div>
+        </div>
+        <div style="margin-bottom:0.8rem;">
+          <strong>Upcoming Deadlines:</strong>
+          <ul>${upcoming}</ul>
+        </div>
+        <div style="margin-bottom:0.2rem;">
+          <strong>Most-focused Goals:</strong>
+          <ul>${topGoals}</ul>
+        </div>
+      `;
+    }
+    function categoryColor(cat) {
+      switch(cat) {
+        case 'performance': return '#dc2626';
+        case 'promotion': return '#7c3aed';
+        case 'bonus': return '#f59e0b';
+        case 'skill': return '#059669';
+        case 'leadership': return '#be185d';
+        default: return '#2563eb';
+      }
+    }
+
+    // ---------- Export / Import ----------
+    function exportData() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      const dt = new Date().toISOString().replace(/[:.]/g,'-');
+      a.download = `devtracker-export-${dt}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(a.href);
+    }
+    function importData(event) {
+      const file = event.target.files?.[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const data = JSON.parse(e.target.result);
+          if (!data || !Array.isArray(data.goals)) throw new Error('Invalid data');
+          state = {
+            version: 2,
+            goals: data.goals || [],
+            achievementCount: typeof data.achievementCount === 'number' ? data.achievementCount : 0,
+            sessionsHistory: Array.isArray(data.sessionsHistory) ? data.sessionsHistory : []
+          };
+          // Normalize
+          loadState(); // will validate current state via migration when saving? We need to re-save normalized.
+          saveState();
+          renderGoals();
+          renderFocusTimer();
+          alert('Import successful.');
+        } catch (err) {
+          console.error(err);
+          alert('Import failed. Please select a valid DevTracker JSON file.');
+        } finally {
+          event.target.value = '';
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ---------- Helpers ----------
+    function escapeHtml(str='') {
+      return String(str)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#39;');
+    }
+    function capitalize(s='') { return s.charAt(0).toUpperCase() + s.slice(1); }
+    function humanizeStatus(s) {
+      return s.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+    }
+
+    // ---------- Init ----------
+    function init() {
+      loadState();
+      renderGoals();
+      renderFocusTimer();
+      // Default filters persisted? Not persisting for simplicity
+      updateFocusDuration();
+      // Keyboard shortcut: focus search
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'f') {
+          e.preventDefault();
+          searchInput().focus();
+        }
+      });
+      // Close modals on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeReports(); closeEdit(); closeNote();
+        }
+      });
+      // Click outside to close modals
+      ['reportsModal','editModal','noteModal'].forEach(id => {
+        const modal = document.getElementById(id);
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) modal.style.display = 'none';
+        });
+      });
+    }
+
+    init();
+  </script>
+
+
+</body></html>
